@@ -1,8 +1,11 @@
 // Make sure to include the `ui.router` module as a dependency.
 angular.module('cfd', [
+    'account',
+    'cfd.overview',
     'cfd.alt-one',
     'cfd.alt-two',
     'cfd.alt-three',
+    'cfd-banner',
     'ui.router'
   ])
   .config(
@@ -70,6 +73,30 @@ angular.module('cfd', [
           //     '<a href="#/user/42">Bob</a>—to see a url redirect in action.</p>'
 
           // })
+        $stateProvider
+          .state('overview', {
+            url: '/overview',
+            views: {
+              'header': {
+                templateUrl: 'partials/common/header.tpl.html'
+              },
+              'main': {
+                // template: '<div>Overview</div>'
+                templateUrl: 'partials/overview.tpl.html'
+                // templateUrl: 'partials/common/sidebar.tpl.html'
+              },
+              // 'sidebar': {
+              //   template: '<div>Overview</div>'
+              //   // templateUrl: 'partials/common/sidebar.tpl.html'
+              // },
+              // 'content': {
+              //   templateUrl: 'partials/overview.tpl.html'
+              // },
+              'footer': {
+                templateUrl: 'partials/common/footer.tpl.html'
+              }
+            }
+          })
 
           //////////////
           // Contacts //

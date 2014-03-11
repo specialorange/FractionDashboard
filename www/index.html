@@ -17,44 +17,48 @@
     <script src="bower_components/angular-animate/angular-animate.min.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/d3/d3.min.js"></script>
 
     <!-- module.js declares the uiRouterSample module and adds items to $rootScope-->
-    <script src="js/module.js"></script>
+    <!-- <script src="js/module.js"></script> -->
     <!-- factory.js defines a 'contacts' http service and a 'utils' global functions service -->
-    <script src="js/factory.js"></script>
+    <!-- <script src="js/factory.js"></script> -->
     <!-- state.js takes care of all the state configuration, where all the magic's at-->
     <script src="js/states/states.js"></script>
+    <script src="js/states/overview.js"></script>
+    <script src="js/states/account.js"></script>
     <script src="js/states/alt-one.js"></script>
     <script src="js/states/alt-two.js"></script>
     <script src="js/states/alt-three.js"></script>
+    <script src="js/cfd-banner.js"></script>
     <script src="js/blink.js"></script>
 
     <!-- could easily use a custom property of the state here instead of 'name' -->
-    <title ng-bind="$state.current.name + ' - ui-router'">ui-router</title>
+    <!-- <title ng-bind="$state.current.name + ' - ui-router'">ui-router</title> -->
   </head>
   <body>
 
-<egghead-banner title="egghead.io presents: ui-router named views"></egghead-banner>
+    <cfd-banner title="Candy Factory Dashboard"></cfd-banner>
 
-<div class="container">
+    <div class="container">
 
-  <!-- Header -->
-  <div ui-view="header" class="row"></div>
+      <!-- Header -->
+      <div ui-view="header" class="row"></div>
 
-  <div class="row">
-    <!-- Sidebar/Nav -->
-    <div ui-view="sidebar" class="col-xs-3"></div>
-    <!-- Content -->
-    <div ui-view="content" class="col-xs-9"></div>
-  </div>
+      <div ui-view="main" class="row">
+        <!-- Sidebar/Nav -->
+        <div ui-view="sidebar" class="col-xs-3"></div>
+        <!-- Content -->
+        <div ui-view="content" class="col-xs-9"></div>
+      </div>
 
-  <!-- Footer -->
-  <div ui-view="footer" class="row"></div>
-</div>
+      <!-- Footer -->
+      <div ui-view="footer" class="row"></div>
+    </div>
 
     <!-- Here is the main ui-view (unnamed) and will be populate by its immediate children's templates
          unless otherwise explicitly named views are targeted. It's also employing ng-animate. -->
-    <div ui-view class="container slide" style="padding-top: 80px;"></div>
+    <!-- <div ui-view class="container slide" style="padding-top: 80px;"></div> -->
 
 
     <hr>
