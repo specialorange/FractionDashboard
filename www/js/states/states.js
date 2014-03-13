@@ -33,11 +33,10 @@ angular.module('cfd', [
         //////////////////////////
 
         // Use $stateProvider to configure your states.
-        $stateProvider
-
           //////////
           // Home //
           //////////
+        $stateProvider
           .state('cfd', {
             url: '/',
             views: {
@@ -73,7 +72,7 @@ angular.module('cfd', [
           //     '<a href="#/user/42">Bob</a>—to see a url redirect in action.</p>'
 
           // })
-        $stateProvider
+        // $stateProvider
           .state('overview', {
             url: '/overview',
             views: {
@@ -96,6 +95,69 @@ angular.module('cfd', [
                 templateUrl: 'partials/common/footer.tpl.html'
               }
             }
+          })
+        // $stateProvider
+          .state('overview.stackedgroup', {
+            url: '/stackedgroup',
+            views: {
+              'header': {
+                templateUrl: 'partials/common/header.tpl.html'
+              },
+              'main': {
+                // template: '<div>Overview</div>'
+                templateUrl: 'partials/visualizations/stackedgroup.html'
+                // templateUrl: 'partials/common/sidebar.tpl.html'
+              },
+              // 'sidebar': {
+              //   template: '<div>Overview</div>'
+              //   // templateUrl: 'partials/common/sidebar.tpl.html'
+              // },
+              // 'content': {
+              //   templateUrl: 'partials/overview.tpl.html'
+              // },
+              'footer': {
+                templateUrl: 'partials/common/footer.tpl.html'
+              }
+            }
+          })
+        // $stateProvider
+          .state('classroom', {
+            url: '/classroom',
+            views: {
+              'header': {
+                templateUrl: 'partials/common/header.tpl.html'
+              },
+              // 'main': {
+              //   // template: '<div>Overview</div>'
+              //   templateUrl: 'partials/overview.tpl.html'
+              //   // templateUrl: 'partials/common/sidebar.tpl.html'
+              // },
+              'sidebar': {
+                // template: '<div>Overview</div>'
+                templateUrl: 'partials/common/classroom-sidebar.tpl.html'
+              },
+              'content': {
+                templateUrl: 'partials/classroom.tpl.html'
+              },
+              'footer': {
+                templateUrl: 'partials/common/footer.tpl.html'
+              }
+            }
+          })
+        // $stateProvider
+          .state('classroom.students', {
+            url: '/students',
+            views: {
+              'content@': {
+                templateUrl: 'partials/classroom.list.tpl.html',
+                // templateUrl: 'partials/classroom.list.tpl.html'
+                controller: function($scope){
+                  $scope.title = 'My Contacts';
+                  $scope.students = ['John', 'jacob', 'jhs']; 
+                }
+              }
+            }
+
           })
 
           //////////////

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+  <head>
+    <script type="text/javascript" src="js/d3.v3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600">
+    <!-- <link rel="stylesheet" type="text/css" href="css/sequences.css"/> -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/crossfilter.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <noscript>&lt;div class="noscriptWarning"&gt;&lt;p&gt;SETHEO suggests using JavaScript to be enabled for full functionality&lt;/p&gt;&lt;/div&gt;</noscript>
+    <header id="header">
+      <nav class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="container-fluid">
+          <div class="row">
+            <div class=".col-sm-4">
+              <a class="brand" href=""></a>
+            </div>
+            <div class=".col-sm-4 navbar pages">
+              <ul class="nav nav-pills nav-justified">
+                <li class="nav-li linkReplace"><a href="../">Home</a></li> <!-- #home -->
+                <li class="nav-li linkReplace"><a href="../about.html">About</a></li>   <!-- ../about.html -->
+              </ul>
+            </div>
+          </div><!-- end .row -->
+        </div>
+      </nav>
+    </header> 
+
+    <div class="container-fluid">
+      <div class="row page" id="projects-page">
+        <div class="col-sm-12">
+          <!-- Content
+          ================================================== -->
+          <div id="content" class="container-fluid">
+
+            <p>Some questions to consider: How does time-of-day correlate with <a href="javascript:filter([null, [100, 150], null, null])">arrival delay</a>? Are <a href="javascript:filter([null, null, [1700, 2000], null])">longer</a> or <a href="javascript:filter([null, null, [0, 300], null])">shorter</a> flights more likely to arrive early? What happened on <a href="javascript:filter([null, [80, 150], null, [new Date(2001, 0, 12), new Date(2001, 0, 13)]])">January 12</a>? How do flight patterns differ between <a href="javascript:filter([null, null, null, [new Date(2001, 0, 27), new Date(2001, 0, 29)]])">weekends</a> and <a href="javascript:filter([null, null, null, [new Date(2001, 0, 29), new Date(2001, 1, 3)]])">weekdays</a>, or <a href="javascript:filter([[4, 7], null, null, null])">mornings</a> and <a href="javascript:filter([[21, 24], null, null, null])">nights</a>? <a href="https://github.com/square/crossfilter/tree/gh-pages">Fork this example</a> and try your own data!
+
+            <div id="charts">
+              <div id="hour-chart" class="chart">
+                <div class="title">Time of Day</div>
+              </div>
+              <div id="delay-chart" class="chart">
+                <div class="title">Arrival Delay (min.)</div>
+              </div>
+              <div id="distance-chart" class="chart">
+                <div class="title">Distance (mi.)</div>
+              </div>
+              <div id="date-chart" class="chart">
+                <div class="title">Date</div>
+              </div>
+            </div>
+
+            <div id="totals"><span id="active">-</span> of <span id="total">-</span> flights selected.</div>
+
+            <hr/>
+
+            <div id="lists">
+              <div id="flight-list" class="list"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="js/crossfiltermain.js"></script>
+  <script src="js/crossfilter.v1.min.js"></script>
+</html>

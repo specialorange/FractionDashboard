@@ -3,11 +3,11 @@ angular.module('classroom', [
   ])
   .config(function ($stateProvider) {
     $stateProvider
-      .state('account', {
-        url: 'account',
+      .state('classroom', {
+        url: '/classroom',
         views: {
           'content@': {
-            templateUrl: 'partials/account.tpl.html'
+            templateUrl: 'partials/classroom.tpl.html'
           }
         }
       })

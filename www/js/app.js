@@ -2,7 +2,7 @@ angular.module('cfd', [
     'cfd.alt-one',
     'cfd.alt-two',
     'cfd.alt-three',
-    'banner',
+    'cfd-banner',
     'ui.router'
   ])
   .config(function ($stateProvider, $urlRouterProvider) {
