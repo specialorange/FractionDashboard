@@ -1,6 +1,8 @@
-angular.module('uiRouterSample')
+angular.module('cfd')
 
-    // A RESTful factory for retreiving contacts from 'contacts.json'
+  // A RESTful factory for retreiving contacts from 'contacts.json'
+
+  // Contacts
   .factory('contacts', ['$http', function ($http, utils) {
     var path = 'contacts.json';
     var contacts = $http.get(path).then(function (resp) {
@@ -18,6 +20,49 @@ angular.module('uiRouterSample')
     };
     return factory;
   }])
+
+  // Students
+  .factory('students', ['$http', function ($http, utils) {
+  // .factory('students', ['$http', function ($http) {
+    var path = 'data/people/students.json';
+    var students = $http.get(path).then(function (resp) {
+      console.log(resp);
+      console.log(resp.data);
+      console.log(resp.data.students);
+      return resp.data;
+    });
+
+// This was working
+    // var factory = {};
+    // factory.all = function () {
+    //   return students;
+    // };
+
+    var list = {};
+    list.all = function () {
+      return students;
+    };
+    list.get = function (id) {
+      return students.then(function(){
+        return utils.findById(students, id);
+      })
+    };
+
+    return list;
+  }])
+
+  // Circles
+  // .factory('circles', ['$http', function ($http) {
+  //   var path = 'data/circles.json';
+  //   var students = $http.get(path).then(function (resp) {
+  //     return resp.data.circles;
+  //   });
+  //   var factory = {};
+  //   factory.all = function () {
+  //     return circles;
+  //   };
+  //   return factory;
+  // }])
 
   .factory('utils', function () {
 

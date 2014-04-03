@@ -1,21 +1,12 @@
 // Make sure to include the `ui.router` module as a dependency.
 angular.module('cfd', [
-    'account',
-    'cfd.overview',
-    'cfd.alt-one',
-    'cfd.alt-two',
-    'cfd.alt-three',
     'cfd-banner',
     'ui.router'
   ])
   .config(
     [          '$stateProvider', '$urlRouterProvider',
       function ($stateProvider,   $urlRouterProvider) {
-
-        /////////////////////////////
-        // Redirects and Otherwise //
-        /////////////////////////////
-
+        // Redirects and Otherwise
         // Use $urlRouterProvider to configure any redirects (when) and invalid urls (otherwise).
         $urlRouterProvider
 
@@ -25,21 +16,20 @@ angular.module('cfd', [
           .when('/user/:id', '/contacts/:id')
 
           // If the url is ever invalid, e.g. '/asdf', then redirect to '/' aka the home state
+          // .otherwise('/error');
           .otherwise('/');
 
-
-        //////////////////////////
-        // State Configurations //
-        //////////////////////////
-
+        // State Configurations
         // Use $stateProvider to configure your states.
-          //////////
-          // Home //
-          //////////
+        // Home
         $stateProvider
           .state('cfd', {
+            // Use a url of "/" to set a states as the "index".
             url: '/',
             views: {
+              // 'messages': {
+              //   templateUrl: 'partials/common/messages.tpl.html'
+              // },
               'header': {
                 templateUrl: 'partials/common/header.tpl.html'
               },
@@ -54,12 +44,6 @@ angular.module('cfd', [
               }
             }
           })
-
-          // .state("home", {
-
-          //   // Use a url of "/" to set a states as the "index".
-          //   url: "/",
-
           //   // Example of an inline template string. By default, templates
           //   // will populate the ui-view within the parent state's template.
           //   // For top level states, like this one, the parent template is
@@ -72,66 +56,109 @@ angular.module('cfd', [
           //     '<a href="#/user/42">Bob</a>—to see a url redirect in action.</p>'
 
           // })
-        // $stateProvider
+
+          // Alt-one
+          .state('cfd.alt-one', {
+            url: 'alt-one',
+            
+            views: {
+              'content@': {
+                templateUrl: 'partials/alt-one.content.tpl.html'
+              }
+            }
+          })
+          // Alt-two
+          .state('cfd.alt-two', {
+            url: 'alt-two',
+            
+            views: {
+              'header@': {
+                templateUrl: 'partials/alt-two.header.tpl.html'
+              },
+              'content@': {
+                templateUrl: 'partials/alt-two.content.tpl.html'
+              }
+            }
+          })
+          // Alt-three
+          .state('cfd.alt-three', {
+            url: 'alt-three',
+            
+            views: {
+              'header@': {
+                templateUrl: 'partials/alt-three.header.tpl.html'
+              },
+              'content@': {
+                templateUrl: 'partials/alt-three.content.tpl.html'
+              }
+            }
+          })
+
+          // OVERVIEW
           .state('overview', {
             url: '/overview',
             views: {
-              'header': {
-                templateUrl: 'partials/common/header.tpl.html'
-              },
-              'main': {
+              'main@': {
                 // template: '<div>Overview</div>'
                 templateUrl: 'partials/overview.tpl.html'
                 // templateUrl: 'partials/common/sidebar.tpl.html'
               },
-              // 'sidebar': {
-              //   template: '<div>Overview</div>'
-              //   // templateUrl: 'partials/common/sidebar.tpl.html'
-              // },
-              // 'content': {
-              //   templateUrl: 'partials/overview.tpl.html'
-              // },
               'footer': {
                 templateUrl: 'partials/common/footer.tpl.html'
               }
             }
           })
-        // $stateProvider
+          // STACKED GROUP
           .state('overview.stackedgroup', {
             url: '/stackedgroup',
             views: {
-              'header': {
-                templateUrl: 'partials/common/header.tpl.html'
+              'main@': {
+                // templateUrl: 'partials/common/blank-main.tpl.html'
+                templateUrl: 'partials/visualizations/stackedgroup.html',
+                // onEnter: function($scope){
+                // }
+                // controller would go here
+                controller: function($scope, $rootScope){
+                  $scope.$on('$viewContentLoaded',
+                    function(event){
+                      stackedGroupJS();
+                    });
+                }
               },
-              'main': {
-                // template: '<div>Overview</div>'
-                templateUrl: 'partials/visualizations/stackedgroup.html'
-                // templateUrl: 'partials/common/sidebar.tpl.html'
-              },
-              // 'sidebar': {
-              //   template: '<div>Overview</div>'
-              //   // templateUrl: 'partials/common/sidebar.tpl.html'
+              // 'sidebar@': {
+              //   // template: '<div>Overview</div>'
+              //   templateUrl: 'partials/common/classroom-sidebar.tpl.html'
               // },
-              // 'content': {
-              //   templateUrl: 'partials/overview.tpl.html'
+              // 'content@': {
               // },
-              'footer': {
-                templateUrl: 'partials/common/footer.tpl.html'
+            }
+          })
+          // Circles
+          .state('overview.circles', {
+            url: '/circles',
+            views: {
+              'main@': {
+                // templateUrl: 'partials/common/blank-main.tpl.html'
+                templateUrl: 'partials/visualizations/circles.html',
+                // onEnter: function($scope){
+                // }
+                // controller would go here
+                controller: function($scope, $rootScope){
+                  $scope.$on('$viewContentLoaded',
+                    function(event){
+                      circlesJS();
+                    });
+                }
               }
             }
           })
-        // $stateProvider
+        // CLASSROOM
           .state('classroom', {
             url: '/classroom',
             views: {
               'header': {
                 templateUrl: 'partials/common/header.tpl.html'
               },
-              // 'main': {
-              //   // template: '<div>Overview</div>'
-              //   templateUrl: 'partials/overview.tpl.html'
-              //   // templateUrl: 'partials/common/sidebar.tpl.html'
-              // },
               'sidebar': {
                 // template: '<div>Overview</div>'
                 templateUrl: 'partials/common/classroom-sidebar.tpl.html'
@@ -144,26 +171,66 @@ angular.module('cfd', [
               }
             }
           })
-        // $stateProvider
+        // CLASSROOM STUDENTS
           .state('classroom.students', {
             url: '/students',
+            
+            resolve: {
+              students: ['students',
+                function( students){
+                  return students.all();
+                }]
+            },
+
             views: {
               'content@': {
                 templateUrl: 'partials/classroom.list.tpl.html',
                 // templateUrl: 'partials/classroom.list.tpl.html'
-                controller: function($scope){
-                  $scope.title = 'My Contacts';
-                  $scope.students = ['John', 'jacob', 'jhs']; 
-                }
+                controller: ['$scope', 'students',
+                    function($scope, students){
+                                  $scope.title = 'My Students';
+                                  $scope.students = students;
+                                  console.log(students);
+                                }]
               }
             }
 
           })
 
-          //////////////
-          // Contacts //
-          //////////////
+          // School
+          .state('school', {
+            url: '/school',
+            
+            views: {
+              'header': {
+                templateUrl: 'partials/common/header.tpl.html'
+              },
+              'sidebar': {
+                templateUrl: 'partials/common/sidebar.tpl.html'
+              },
+              'content': {
+                templateUrl: 'partials/common/content.tpl.html'
+              }
+            }
+          })
 
+          // ERROR
+          .state('error', {
+            url: '/error',
+            
+            views: {
+              'main@': {
+                templateUrl: 'partials/common/error.tpl.html'
+              }
+            }
+          })
+
+
+
+
+
+
+          // Contacts
           .state('contacts', {
 
             // With abstract set to true, that means this state can not be explicitly activated.
@@ -209,11 +276,7 @@ angular.module('cfd', [
                 };
               }]
           })
-
-          /////////////////////
-          // Contacts > List //
-          /////////////////////
-
+          // Contacts > List
           // Using a '.' within a state name declares a child within a parent.
           // So you have a new state 'list' within the parent 'contacts' state.
           .state('contacts.list', {
@@ -230,11 +293,7 @@ angular.module('cfd', [
             // most important thing to remember about templates.
             templateUrl: 'contacts.list.html'
           })
-
-          ///////////////////////
-          // Contacts > Detail //
-          ///////////////////////
-
+          // Contacts > Detail
           // You can have unlimited children within a state. Here is a second child
           // state within the 'contacts' parent state.
           .state('contacts.detail', {
@@ -292,11 +351,7 @@ angular.module('cfd', [
               }
             }
           })
-
-          //////////////////////////////
-          // Contacts > Detail > Item //
-          //////////////////////////////
-
+          // Contacts > Detail > Item
           .state('contacts.detail.item', {
 
             // So following what we've learned, this state's full url will end up being
@@ -329,11 +384,7 @@ angular.module('cfd', [
               }
             }
           })
-
-          /////////////////////////////////////
-          // Contacts > Detail > Item > Edit //
-          /////////////////////////////////////
-
+          // Contacts > Detail > Item > Edit
           // Notice that this state has no 'url'. States do not require a url. You can use them
           // simply to organize your application into "places" where each "place" can configure
           // only what it needs. The only way to get to this state is via $state.go (or transitionTo)
@@ -355,27 +406,5 @@ angular.module('cfd', [
                   }]
               }
             }
-          })
-
-          ///////////
-          // About //
-          ///////////
-
-          .state('about', {
-            url: '/about',
-
-            // Showing off how you could return a promise from templateProvider
-            templateProvider: ['$timeout',
-              function (        $timeout) {
-                return $timeout(function () {
-                  return '<p class="lead">UI-Router Resources</p><ul>' +
-                           '<li><a href="https://github.com/angular-ui/ui-router/tree/master/sample">Source for this Sample</a></li>' +
-                           '<li><a href="https://github.com/angular-ui/ui-router">Github Main Page</a></li>' +
-                           '<li><a href="https://github.com/angular-ui/ui-router#quick-start">Quick Start</a></li>' +
-                           '<li><a href="https://github.com/angular-ui/ui-router/wiki">In-Depth Guide</a></li>' +
-                           '<li><a href="https://github.com/angular-ui/ui-router/wiki/Quick-Reference">API Reference</a></li>' +
-                         '</ul>';
-                }, 100);
-              }]
           })
       }]);

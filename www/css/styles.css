@@ -1,3 +1,7 @@
+div[ui-view=main] {
+  padding-top: 80px;
+}
+
 .slide.ng-leave {
   position: relative;
 }

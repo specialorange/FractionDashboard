@@ -1,7 +1,7 @@
-<h2>All Students {{ title }} </h2>
+<h2>{{ title }}</h2>
 <ul>
   <li ng-repeat="student in students">
-    {{ student }}
+    {{ student.name }}
     <!-- <a ui-sref="students.detail({studentId:student.id})">{{student.name}}</a> -->
   </li>
 </ul>    

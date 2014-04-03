@@ -1,13 +1,13 @@
-angular.module('account', [
+angular.module('cfd.alt-one', [
     'ui.router'
   ])
   .config(function ($stateProvider) {
     $stateProvider
-      .state('account', {
-        url: 'account',
+      .state('cfd.alt-one', {
+        url: 'alt-one',
         views: {
           'content@': {
-            templateUrl: 'partials/account.tpl.html'
+            templateUrl: 'partials/alt-one.content.tpl.html'
           }
         }
       })
