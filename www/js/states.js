@@ -190,7 +190,6 @@ angular.module('cfd', [
                     function($scope, students){
                                   $scope.title = 'My Students';
                                   $scope.students = students;
-                                  console.log(students);
                                 }]
               }
             }

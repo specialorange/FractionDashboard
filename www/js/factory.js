@@ -26,9 +26,6 @@ angular.module('cfd')
   // .factory('students', ['$http', function ($http) {
     var path = 'data/people/students.json';
     var students = $http.get(path).then(function (resp) {
-      console.log(resp);
-      console.log(resp.data);
-      console.log(resp.data.students);
       return resp.data;
     });
 

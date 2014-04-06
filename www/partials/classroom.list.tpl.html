@@ -1,7 +1,36 @@
-<h2>{{ title }}</h2>
-<ul>
-  <li ng-repeat="student in students">
-    {{ student.name }}
-    <!-- <a ui-sref="students.detail({studentId:student.id})">{{student.name}}</a> -->
-  </li>
-</ul>    
+<div class="row">
+  <div class="col-xs-7">
+    <h2>{{ title }}</h2>
+    <ul>
+      <li ng-repeat="student in students">
+        {{ student.name }}
+        <!-- <a ui-sref="students.detail({studentId:student.id})">{{student.name}}</a> -->
+      </li>
+    </ul>      
+  </div>
+  <div class="col-xs-5 pull-right">
+    <h2>Add Student</h2>
+    <div ng-controller="StudentController">
+    <form>
+    <label>Name</label><br>
+      <input type="text" name="name" ng-model="newstudent.name"/><br>
+    <label>Email</label><br>
+      <input type="text" name="email" ng-model="newstudent.email"/><br>
+    <label>Phone</label><br>
+      <input type="text" name="phone" ng-model="newstudent.phone"/><br>
+    <label>Address</label><br>
+      <input type="text" name="address" ng-model="newstudent.address" placeholder="123 Main St City, ST, ZIP"/><br>
+    <label>Age </label><br>
+      <input type="text" name="age" ng-model="newstudent.age"/><br>
+    <label>Gender</label><br> 
+      <input type="radio" ng-model="newstudent.gender" value="female"> Female<br/>
+      <input type="radio" ng-model="newstudent.gender" value="male"> Male<br/>
+    <label>School</label><br>
+      <input type="text" name="school" ng-model="newstudent.school" placeholder="Country Day Learning Academy"/><br/>
+    
+    <input type="hidden" ng-model="newstudent.id" />
+    
+    <input type="button" value="Save" ng-click="saveStudent()" />
+    </form>
+  </div>
+</div>
