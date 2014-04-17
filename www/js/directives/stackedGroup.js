@@ -4,11 +4,13 @@ angular.module('cfd')
       return {
         restrict: 'E',
         scope: {
-          width: '=width'
+          width: '@width',
+          barsOnly: '@bar'
         },
         replace: true,
         templateUrl: '/js/directives/stackedGroup.html',
         link: function (scope, element, attrs) {
+          console.log(scope.barsOnly);
           // console.log('DIRECTIVE!');
           scope.name = 'Jeff';
           scope.numPoints=3;
@@ -78,11 +80,13 @@ angular.module('cfd')
                 .delay(function(d, i) { return i * 10; })
                 .attr("y", function(d) { return y(d.y0 + d.y); })
                 .attr("height", function(d) { return y(d.y0) - y(d.y0 + d.y); });
-          
-            svg.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate(0," + height + ")")
-                .call(xAxis);
+
+            if(!scope.barsOnly){
+              svg.append("g")
+                  .attr("class", "x axis")
+                  .attr("transform", "translate(0," + height + ")")
+                  .call(xAxis);
+            }
 
             d3.selectAll(".add-data")
                 .on("click", function() {

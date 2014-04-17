@@ -144,9 +144,9 @@ angular.module('cfd', [
                 // onEnter: function($scope){
                 // }
                 // controller would go here
-                controller: function ($scope) {
+                controller: [ '$scope', '$rootScope', function($scope, $rootScope){
                   // (It's CSV, but GitHub Pages only gzip's JSON at the moment.)
-                  d3.csv("data/visualizations/crossfilter.json", function(error, flights) {
+                  d3.csv("data/visualizations/xfilter.json", function(error, questions) {
 
                     // Various formatters.
                     var formatNumber = d3.format(",d"),
@@ -154,29 +154,33 @@ angular.module('cfd', [
                         formatDate = d3.time.format("%B %d, %Y"),
                         formatTime = d3.time.format("%I:%M %p");
 
-                    // A nest operator, for grouping the flight list.
+                    // A nest operator, for grouping the question list.
                     var nestByDate = d3.nest()
-                        .key(function(d) { return d3.time.day(d.date); });
+                        .key(function(d) { return d3.time.day(d.datetime); });
 
                     // A little coercion, since the CSV is untyped.
-                    flights.forEach(function(d, i) {
+                    questions.forEach(function(d, i) {
+                      // datetime,wrong,answered,grade,upperLevel,name
                       d.index = i;
-                      d.date = parseDate(d.date);
-                      d.delay = +d.delay;
-                      d.distance = +d.distance;
+                      d.datetime = parseDate(d.datetime);
+                      d.wrong = +d.wrong;
+                      d.answered = +d.answered;
+                      d.grade = +d.grade;
+                      d.upperLevel = +d.upperLevel;
+                      d.name = d.name;
                     });
 
                     // Create the crossfilter for the relevant dimensions and groups.
-                    var flight = crossfilter(flights),
-                        all = flight.groupAll(),
-                        date = flight.dimension(function(d) { return d.date; }),
+                    var question = crossfilter(questions),
+                        all = question.groupAll(),
+                        date = question.dimension(function(d) { return d.datetime; }),
                         dates = date.group(d3.time.day),
-                        hour = flight.dimension(function(d) { return d.date.getHours() + d.date.getMinutes() / 60; }),
+                        hour = question.dimension(function(d) { return d.datetime.getHours() + d.datetime.getMinutes() / 60; }),
                         hours = hour.group(Math.floor),
-                        delay = flight.dimension(function(d) { return Math.max(-60, Math.min(149, d.delay)); }),
-                        delays = delay.group(function(d) { return Math.floor(d / 10) * 10; }),
-                        distance = flight.dimension(function(d) { return Math.min(1999, d.distance); }),
-                        distances = distance.group(function(d) { return Math.floor(d / 50) * 50; });
+                        wrong = question.dimension(function(d) { return Math.max(-60, Math.min(149, d.wrong)); }),
+                        wrongs = wrong.group(function(d) { return Math.floor(d / 10) * 10; }),
+                        answered = question.dimension(function(d) { return Math.min(1999, d.answered); }),
+                        answereds = answered.group(function(d) { return Math.floor(d / 50) * 50; });
 
                     var charts = [
 
@@ -188,17 +192,17 @@ angular.module('cfd', [
                           .rangeRound([0, 10 * 24])),
 
                       barChart()
-                          .dimension(delay)
-                          .group(delays)
+                          .dimension(wrong)
+                          .group(wrongs)
                         .x(d3.scale.linear()
-                          .domain([-60, 150])
-                          .rangeRound([0, 10 * 21])),
+                          .domain([0, 40])
+                          .rangeRound([1, 10 * 21])),
 
                       barChart()
-                          .dimension(distance)
-                          .group(distances)
+                          .dimension(answered)
+                          .group(answereds)
                         .x(d3.scale.linear()
-                          .domain([0, 2000])
+                          .domain([0, 110])
                           .rangeRound([0, 10 * 40])),
 
                       barChart()
@@ -206,9 +210,9 @@ angular.module('cfd', [
                           .group(dates)
                           .round(d3.time.day.round)
                         .x(d3.time.scale()
-                          .domain([new Date(2001, 0, 1), new Date(2001, 3, 1)])
+                          .domain([new Date(2013, 7, 1), new Date(2014, 5, 31)])
                           .rangeRound([0, 10 * 90]))
-                          .filter([new Date(2001, 1, 1), new Date(2001, 2, 1)])
+                          // .filter([new Date(2001, 1, 1), new Date(2001, 2, 1)])
 
                     ];
 
@@ -221,11 +225,11 @@ angular.module('cfd', [
 
                     // Render the initial lists.
                     var list = d3.selectAll(".list")
-                        .data([flightList]);
+                        .data([questionList]);
 
                     // Render the total.
                     d3.selectAll("#total")
-                        .text(formatNumber(flight.size()));
+                        .text(formatNumber(question.size()));
 
                     renderAll();
 
@@ -243,11 +247,14 @@ angular.module('cfd', [
 
                     // Like d3.time.format, but faster.
                     function parseDate(d) {
-                      return new Date(2001,
-                          d.substring(0, 2) - 1,
-                          d.substring(2, 4),
-                          d.substring(4, 6),
-                          d.substring(6, 8));
+                      return new Date(
+                        // 0323142109 => feb 23 2014 21:09pm
+                        ('20'+d.substring(4, 6)), //Year
+                        d.substring(0, 2) - 1, //Month
+                        d.substring(2, 4), //Day
+                        d.substring(6, 8), //Hour
+                        d.substring(8, 10)); //Time
+                      // return date;
                     }
 
                     window.filter = function(filters) {
@@ -260,51 +267,54 @@ angular.module('cfd', [
                       renderAll();
                     };
 
-                    function flightList(div) {
-                      var flightsByDate = nestByDate.entries(date.top(40));
+                    function questionList(div) {
+                      var questionsByDate = nestByDate.entries(date.top(40));
 
                       div.each(function() {
                         var date = d3.select(this).selectAll(".date")
-                            .data(flightsByDate, function(d) { return d.key; });
+                            .data(questionsByDate, function(d) { return d.key; });
 
                         date.enter().append("div")
                             .attr("class", "date")
                           .append("div")
                             .attr("class", "day")
-                            .text(function(d) { return formatDate(d.values[0].date); });
+                            .text(function(d) { return formatDate(d.values[0].datetime); });
 
                         date.exit().remove();
 
-                        var flight = date.order().selectAll(".flight")
+                        var question = date.order().selectAll(".question")
                             .data(function(d) { return d.values; }, function(d) { return d.index; });
 
-                        var flightEnter = flight.enter().append("div")
-                            .attr("class", "flight");
+                        var questionEnter = question.enter().append("div")
+                            .attr("class", "question");
 
-                        flightEnter.append("div")
+                        questionEnter.append("div")
                             .attr("class", "time")
-                            .text(function(d) { return formatTime(d.date); });
+                            .text(function(d) { return formatTime(d.datetime); });
 
-                        flightEnter.append("div")
-                            .attr("class", "origin")
-                            .text(function(d) { return d.origin; });
+                        questionEnter.append("div")
+                            .attr("class", "wrong")
+                            .text(function(d) { return d.wrong + ' wrong'; });
 
-                        flightEnter.append("div")
-                            .attr("class", "destination")
-                            .text(function(d) { return d.destination; });
+                        questionEnter.append("div")
+                            .attr("class", "answered")
+                            .text(function(d) { return formatNumber(d.answered) + " answered"; });
 
-                        flightEnter.append("div")
-                            .attr("class", "distance")
-                            .text(function(d) { return formatNumber(d.distance) + " mi."; });
+                        questionEnter.append("div")
+                            .attr("class", "grade")
+                            .text(function(d) { return d.grade; });
 
-                        flightEnter.append("div")
-                            .attr("class", "delay")
-                            .classed("early", function(d) { return d.delay < 0; })
-                            .text(function(d) { return formatChange(d.delay) + " min."; });
+                        questionEnter.append("div")
+                            .attr("class", "upperLevel")
+                            .text(function(d) { return 'Highest Level: ' + d.upperLevel; });
 
-                        flight.exit().remove();
+                        questionEnter.append("div")
+                            .attr("class", "name")
+                            .text(function(d) { return d.name; });
 
-                        flight.order();
+                        question.exit().remove();
+
+                        question.order();
                       });
                     }
 
@@ -500,7 +510,7 @@ angular.module('cfd', [
                       return d3.rebind(chart, brush, "on");
                     }
                   });
-                }
+                }]
               }
             }
           })
