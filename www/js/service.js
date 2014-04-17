@@ -1,8 +1,8 @@
 // var module = angular.module('cfd', []);
 angular.module('cfd')
   // .factory('students', ['$http', function ($http, utils) {
-  .service('StudentService', [ '$http', '$scope',
-                      function ($http, $scope) {
+  .service('StudentService', [ '$http',
+                      function ($http) {
     //students array to hold list of all students
     // $scope.students = [];
     var path = 'data/people/students.json';
@@ -20,7 +20,7 @@ angular.module('cfd')
         student.id = 51;
         console.warn(student)
         window.students = $scope.students;
-        $scope.students.push(student);
+        // $scope.students.push(student);
       } else {
         //for existing student, find this student using id
         //and update it.
